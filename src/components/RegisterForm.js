@@ -1,6 +1,7 @@
 import React, {useState}  from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, TextInput  } from 'react-native'
 import  { validateEmail } from '../utils/validations';
+import firebase from '../utils/firebase';
 
 export default function RegisterForm(props) {
     const {changeForm} = props;
@@ -24,6 +25,20 @@ export default function RegisterForm(props) {
             error.repetPassword = true;
         } else {
             console.log("Formulario Correcto!");
+
+            firebase.auth().createUserWithEmailAndPassword(formData.email , formData.password)
+            .then(() => {
+                console.log("Cuenta Creada")
+            }).catch(() => {
+                setFormError({
+
+                    email: true ,
+                    password: true,
+                    repetPassword: true,
+                });
+            });
+            
+
         }
 
         setFormError(error);
