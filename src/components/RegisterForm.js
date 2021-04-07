@@ -1,27 +1,46 @@
 import React, {useState}  from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, TextInput  } from 'react-native'
+import  { validateEmail } from '../utils/validations';
 
 export default function RegisterForm(props) {
     const {changeForm} = props;
     const [formData, setFormData] = useState(defaultValues());
+    const [formError, setFormError] = useState({})
 
     const  register = () => {
-        console.log(register);
-        console.log(formData);
+
+        let error = {}
+        if(!formData.email || !formData.password || !formData.repetPassword){
+            if(!formData.email) error.email = true;
+            if(!formData.password) error.password = true;
+            if(!formData.repetPassword) error.repetPassword = true;
+        } else if(!validateEmail(formData.email)){
+                error.email = true;
+        } else if(formData.password !== formData.repetPassword){
+                    error.password = true;
+                    error.repetPassword = true;
+                } else if(formData.password.length < 6){
+            error.password = true;
+            error.repetPassword = true;
+        } else {
+            console.log("Formulario Correcto!");
+        }
+
+        setFormError(error);
     }
 
 
     return (
         <>
             <TextInput 
-                style={styles.input}
+                style={[styles.input, formError.email && styles.error]}
                 placeholder="Correo electronico"
                 placeholderTextColor="#969696"
                 onChange={(e) => setFormData({...formData, email: e.nativeEvent.text})}
                 
                 />
             <TextInput 
-                style={styles.input}
+                style={[styles.input , formError.password && styles.error]}
                 placeholder="Contrasena"
                 placeholderTextColor="#969696"
                 secureTextEntry={true}
@@ -29,7 +48,7 @@ export default function RegisterForm(props) {
                 
                 />
             <TextInput 
-                style={styles.input}
+                style={[styles.input , formError.repetPassword && styles.error]}
                 placeholder="Repetir Contrasena"
                 placeholderTextColor="#969696"
                 secureTextEntry={true}
@@ -83,4 +102,8 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         marginBottom: 15,
     },
+    error: {
+        borderColor: "#940c0c",
+    },
+
 })
