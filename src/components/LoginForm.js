@@ -7,10 +7,21 @@ export default function LoginForm(props) {
     // console.log(props);
     const {changeForm} = props
     const [formData, setFormData] = useState(defaultValue());
+    const [formError, setFormError] = useState({})
 
     const login = () => {
-        console.log("Inicando Session");
-        console.log(formData);
+        let errors ={};
+        if(!formData.email || !formData.password){
+            if(!formData.email) errors.email = true;
+            if(!formData.password) errors.password = true;
+            console.log("ERROR 1")
+        } else if(!validateEmail(formData.email)) {
+            errors.email = true;
+            console.log("ERROR 2")
+        } else {
+            console.log("Ok");
+        }
+        setFormError(errors);
     };
 
     const onChange = (e, type) => {
@@ -21,13 +32,13 @@ export default function LoginForm(props) {
         <>
             
             <TextInput 
-                    style={styles.input}
+                    style={[styles.input , formError.email && styles.error]}
                     placeholder="Correo Electronico"
                     placeholderTextColor="#969696"
                     onChange={(e) => onChange(e, "email")}
                     />
             <TextInput 
-                    style={styles.input}
+                    style={[styles.input , formError.email && styles.error]}
                     placeholder="Contrasena"
                     placeholderTextColor="#969696"
                     secureTextEntry={true}
