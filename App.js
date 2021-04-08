@@ -3,7 +3,7 @@ import {StyleSheet, StatusBar, SafeAreaView, Text, View, Button } from 'react-na
 import Auth from './src/components/Auth';
 import firebase from './src/utils/firebase';
 import 'firebase/auth';
-
+import ListBirthday from './src/components/ListBirthday';
 
 
 export default function App() {
@@ -27,26 +27,12 @@ export default function App() {
     <>
     <StatusBar  barStyle='light-content' />
     <SafeAreaView style={styles.background}>
-        { user ? <Logout /> : <Auth/>}
+        { user ? <ListBirthday /> : <Auth/>}
     </SafeAreaView>
     </>
   )
 }
 
-
-function Logout() {
-
-  const Logout = () => {
-    firebase.auth().signOut();
-  }
-
-  return(
-    <View>
-        <Text>Estas Logeado</Text>
-        <Button title="Cerrar Session" onPress={Logout} />
-    </View>
-  )
-}
 
 
 
