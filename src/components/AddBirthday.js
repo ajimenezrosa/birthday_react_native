@@ -1,12 +1,11 @@
 import React ,{useState} from 'react'
-import { StyleSheet, Text, View , TextInput} from 'react-native'
+import { StyleSheet, Text, View , TextInput, TouchableOpacity} from 'react-native'
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import moment from 'moment';
 
 export default function AddBirthday() {
     const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
     const [formData, setFormData] = useState({});
-    console.log(formData);
 
     const hideDatePicker = () => {
         setIsDatePickerVisible(false);
@@ -26,17 +25,27 @@ export default function AddBirthday() {
         setIsDatePickerVisible(true)
     }
 
+    const onChange = (e , type) => {
+        setFormData({...formData, [type]: e.nativeEvent.text});
+    }
+
+    const onSubmit = () => {
+        console.log(formData);
+    }
+
     return (
         <>
             <View style={styles.container} >
                 <TextInput style={styles.input}
                     placeholder="Nombre"
                     placeholderTextColor="#969696"
-
-                />
+                    onChange={(e) => onChange(e, "name")}
+                    
+                    />
                 <TextInput style={styles.input}
                     placeholder="Apellidos"
                     placeholderTextColor="#969696"
+                    onChange={(e) => onChange(e, "lastname")}
 
                 />
                 <View style={[styles.input, styles.datepicker]}>
@@ -47,7 +56,15 @@ export default function AddBirthday() {
                         ? moment(formData.dateBirt).format('LL')
                         : "Fecha de Nacimiento" 
                     } </Text>
+
+
                 </View>
+           <View>
+                <TouchableOpacity onPress={onSubmit}>
+                    <Text style={styles.AddButton}>Crear Cumpleanos</Text>
+                </TouchableOpacity>
+            </View>
+
 
             </View>
             <DateTimePickerModal 
@@ -56,6 +73,8 @@ export default function AddBirthday() {
                 onConfirm={handlerConfirm}
                 onCancel={hideDatePicker}
             />
+
+ 
 
         </>
     )
@@ -100,4 +119,9 @@ const styles = StyleSheet.create({
         color: "#969696",
         fontSize: 18,
     },
+    AddButton: {
+        fontSize: 18,
+        color: "#FFF",
+    },
+
 })
