@@ -8,7 +8,8 @@ import 'firebase/firestore';
 firebase.firestore().settings({experimentalForceLongPolling: true});
 const db = firebase.firestore(firebase);
 
-export default function AddBirthday() {
+export default function AddBirthday(props) {
+    const { user , setShowList } = props;
     const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
     const [formData, setFormData] = useState({});
     const [formError, setFormError] = useState({});
@@ -47,10 +48,10 @@ export default function AddBirthday() {
            const data = formData;
            data.dateBirt.setYear(0);
 
-           db.collection("cumples")
+           db.collection(user.uid)
                 .add(data)
                 .then(() => {
-                    console.log("Ok")
+                    setShowList(true);
                 })
                 .catch(() => {
                     setFormError({name: true , lastname: true, dateBirt: true});

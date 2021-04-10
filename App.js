@@ -30,7 +30,7 @@ export default function App() {
 
 
   // firebase.auth().signOut();
-
+ 
   useEffect(() => {
     firebase.auth().onAuthStateChanged((response) => {
       setUser(response);
@@ -41,12 +41,14 @@ export default function App() {
   if (user === undefined){
     return null;
   }
+  // console.log(user.id);
+
 
   return (
     <>
     <StatusBar  barStyle='light-content' />
     <SafeAreaView style={styles.background}>
-        { user ? <ListBirthday /> : <Auth/>}
+        { user ? <ListBirthday user={user} /> : <Auth/>}
     </SafeAreaView>
     </>
   )

@@ -4,7 +4,8 @@ import AddBirthday from './AddBirthday';
 import ActionBar from './ActionBar';
 
 
-export default function ListBirthday() {
+export default function ListBirthday(props) {
+    const { user } = props
     const [showList, setShowList] = useState(true);
 
 
@@ -25,7 +26,7 @@ export default function ListBirthday() {
                 <Text style={styles.text} >LIST</Text>
                 <Text style={styles.text} >LIST</Text>
                 </>
-            ) : <AddBirthday  />
+            ) : <AddBirthday user={user} setShowList={setShowList} />
             }
             <ActionBar showList={showList}  setShowList={setShowList} />
         </View>
