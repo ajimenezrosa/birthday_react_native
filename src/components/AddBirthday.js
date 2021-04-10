@@ -6,6 +6,7 @@ import moment from 'moment';
 export default function AddBirthday() {
     const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
     const [formData, setFormData] = useState({});
+    const [formError, setFormError] = useState({});
 
     const hideDatePicker = () => {
         setIsDatePickerVisible(false);
@@ -30,26 +31,37 @@ export default function AddBirthday() {
     }
 
     const onSubmit = () => {
-        console.log(formData);
-    }
+        let errors = {};
+
+        if(!formData.name || !formData.lastname || !formData.dateBirt){
+            if(!formData.name) errors.name = true;
+            if(!formData.lastname) errors.lastname = true;
+            if(!formData.dateBirt) errors.dateBirt = true;
+        } else {
+
+            console.log("ok");
+        }
+ 
+        setFormError(errors);
+    };
 
     return (
         <>
             <View style={styles.container} >
-                <TextInput style={styles.input}
+                <TextInput style={[styles.input , formError.name && styles.errors]}
                     placeholder="Nombre"
                     placeholderTextColor="#969696"
                     onChange={(e) => onChange(e, "name")}
                     
                     />
-                <TextInput style={styles.input}
+                <TextInput style={[styles.input , formError.lastname && styles.errors]}
                     placeholder="Apellidos"
                     placeholderTextColor="#969696"
                     onChange={(e) => onChange(e, "lastname")}
 
                 />
-                <View style={[styles.input, styles.datepicker]}>
-                    <Text style={ formData.dateBirt ? styles.textDate : styles.textDate2}
+                <View style={[styles.input, styles.datepicker , formError.dateBirt && styles.errors]}>
+                    <Text style={formData.dateBirt ? styles.textDate : styles.textDate2 }
 
                             onPress={showDatePiker}
                     >{formData.dateBirt 
@@ -122,6 +134,9 @@ const styles = StyleSheet.create({
     AddButton: {
         fontSize: 18,
         color: "#FFF",
+    },
+    errors: {
+        borderColor: "#940c0c",
     },
 
 })
